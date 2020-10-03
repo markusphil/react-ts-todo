@@ -2,18 +2,7 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-import TaskEntry from "./components/TaskEntry";
-import { Task } from "./types";
-
-const taskFixture: Task = {
-  id: 1,
-  name: "First Test",
-  createdAt: new Date(),
-  done: false,
-};
-function onChange(id: number, value: boolean): void {
-  console.log(id, value);
-}
+import TaskOverview from "./components/TaskOverview";
 
 function App() {
   return (
@@ -32,7 +21,7 @@ function App() {
           Learn React
         </a>
       </header>
-      <TaskEntry {...taskFixture} changeHandler={onChange} />
+      <TaskOverview />
     </div>
   );
 }
