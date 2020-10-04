@@ -2,7 +2,7 @@ export interface Task {
   id: number;
   name: string;
   done: boolean;
-  descripton?: string;
+  description?: string;
   dueTo?: Date;
   createdAt: Date;
   category?: Category;

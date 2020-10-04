@@ -12,7 +12,7 @@ interface TaskListProps {
 function TaskList({ tasks, updateTaskHandler }: TaskListProps) {
   const { filteredList, search, setSearch } = useSearch(tasks, [
     "name",
-    "descripton",
+    "description",
   ]);
 
   return (
