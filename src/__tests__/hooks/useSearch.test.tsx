@@ -13,8 +13,9 @@ const mockedList: MockedListItem[] = [
 ];
 
 interface MockedListItem {
-  noString: any;
+  noString: number;
   string: string;
+  anotherString?: string;
 }
 
 test("valid Search", () => {
@@ -28,8 +29,8 @@ test("valid Search", () => {
   expect(result.current.filteredList).toEqual(mockedList);
 });
 
-test("invalid Search", () => {
-  const { result } = renderHook(() => useSearch(mockedList, ["noString"]));
+test("search in undefined prop", () => {
+  const { result } = renderHook(() => useSearch(mockedList, ["anotherString"]));
   expect(result.current.filteredList).toEqual(mockedList);
   act(() => result.current.setSearch("134"));
   expect(result.current.filteredList).toEqual([]);

@@ -1,8 +1,12 @@
 import { useMemo, useState } from "react";
 
-function useSearch<T, K extends keyof T>(
+type StringValueKeys<T> = {
+  [K in keyof T]: T[K] extends string | undefined | null ? K : never;
+}[keyof T];
+
+function useSearch<T>(
   target: Array<T>,
-  keys: Array<K>,
+  keys: Array<StringValueKeys<T>>,
   initialSearch: string = ""
 ) {
   const [search, setSearch] = useState<string>(initialSearch);
@@ -14,9 +18,6 @@ function useSearch<T, K extends keyof T>(
             keys.some((k) => {
               const value = t[k];
               if (typeof value === "string") return value.includes(search);
-              // console.warn("you tried to search in a non-string property");
-              // TODO: implement behavior for numbers
-              // + how to make sure only keys for props of type string or number are allowed to be passed?
               return false;
             })
           )
