@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { doneTask, undoneTask } from "../taskFixtures";
-import TaskList from "../components/TaskList";
+import { doneTask, undoneTask } from "../../taskFixtures";
+import TaskList from "../../components/TaskList";
 
 const fixtureList = [doneTask, undoneTask];
 

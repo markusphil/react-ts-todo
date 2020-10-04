@@ -2,9 +2,9 @@ import React from "react";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // fixtures
-import { doneTask, undoneTask } from "../taskFixtures";
+import { doneTask, undoneTask } from "../../taskFixtures";
 // component
-import TaskEntry from "../components/TaskEntry";
+import TaskEntry from "../../components/TaskEntry";
 
 const onChange = jest.fn();
 

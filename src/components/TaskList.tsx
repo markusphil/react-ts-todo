@@ -6,11 +6,10 @@ import useSearch from "../hooks/useSearch";
 // Concern: Display, Search and Filter List of Tasks
 interface TaskListProps {
   tasks: Task[];
-  emptyListText: string;
   updateTaskHandler: (id: number, value: boolean) => void;
 }
 
-function TaskList({ tasks, emptyListText, updateTaskHandler }: TaskListProps) {
+function TaskList({ tasks, updateTaskHandler }: TaskListProps) {
   const { filteredList, search, setSearch } = useSearch(tasks, [
     "name",
     "descripton",
@@ -38,7 +37,7 @@ function TaskList({ tasks, emptyListText, updateTaskHandler }: TaskListProps) {
           ))}
         </ul>
       ) : (
-        <div>{emptyListText}</div>
+        <div>No Tasks Found!</div>
       )}
     </div>
   );

@@ -35,11 +35,7 @@ function TaskOverview() {
       {isLoading ? (
         <div>...loading</div>
       ) : (
-        <TaskList
-          tasks={tasks}
-          updateTaskHandler={toggleTaskDone}
-          emptyListText="No Tasks Found!"
-        />
+        <TaskList tasks={tasks} updateTaskHandler={toggleTaskDone} />
       )}
     </Fragment>
     //IDEA: display TaskList Skeleton while loading
