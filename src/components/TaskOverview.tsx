@@ -1,10 +1,12 @@
 import React, { Fragment, useEffect, useReducer, useState } from "react";
 import { doneTask, undoneTask } from "../taskFixtures";
-import { Task } from "../types";
+import { Task } from "../types/types";
 import { ActionUnion } from "../types/helpers";
 import TaskList from "./TaskList";
 
 // concern: handle API connection and changes to task data
+
+// TODO: write tests for TaskOverview
 
 enum Actions {
   Add = "ADD_TASK",
@@ -65,7 +67,6 @@ function TaskOverview() {
 
   return (
     <Fragment>
-      <h1>TODO</h1>
       {isLoading ? (
         <div>...loading</div>
       ) : (
