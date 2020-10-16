@@ -3,6 +3,7 @@ import { doneTask, undoneTask } from "../taskFixtures";
 import { Task } from "../types/types";
 import { ActionUnion } from "../types/helpers";
 import TaskList from "./TaskList";
+import QuickAddTask from "./QuickAddTask";
 
 // concern: handle API connection and changes to task data
 
@@ -47,6 +48,8 @@ function taskReducer(state: Task[], action: TaskActions): Task[] {
   }
 }
 
+
+
 function TaskOverview() {
   const [isLoading, setIsLoading] = useState(false);
   const [tasks, dispatch] = useReducer(taskReducer, []);
@@ -65,6 +68,15 @@ function TaskOverview() {
     }, 1000);
   }, []);
 
+  function quickAddHandler(taskName: string){
+    dispatch({type: Actions.Add, payload: {
+      id: Math.random()*20000,
+      name: taskName,
+      done: false,
+      createdAt:new Date()
+    }})
+  }
+
   return (
     <Fragment>
       {isLoading ? (
@@ -77,6 +89,7 @@ function TaskOverview() {
           }
         />
       )}
+      <QuickAddTask addTaskHandler={quickAddHandler}/>
     </Fragment>
     //IDEA: display TaskList Skeleton while loading
   );
