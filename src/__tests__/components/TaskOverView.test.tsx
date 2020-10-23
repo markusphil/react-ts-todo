@@ -1,16 +1,22 @@
 import React from "react";
 import { render } from "@testing-library/react";
+import {apiService} from "../../services/mockedApiService"
+import {mocked} from "ts-jest/utils"
 
 import TaskOverview from "../../components/TaskOverview";
+import { undoneTask } from "../../taskFixtures";
 // TODO:  cover all reducer actions
-// Open Question : how to best test Components like the overview, without a lot of duplicate tests
+
+jest.mock("../../services/mockedApiService")
 
 test
-("Load initially", ()=>{
-    //TODO: Mock API conection here jest.mock() with module that handles API connection
-    const {getByLabelText, getByText} = render(<TaskOverview/>)
-    const loadingText = getByText("loading")
-    expect(loadingText).toBeInTheDocument();
+("Load initially", async ()=>{
     
+    mocked(apiService).get.mockResolvedValue([undoneTask]);
 
+    const {findByLabelText, getByText} = render(<TaskOverview/>)
+    const loadingText = getByText("...loading")
+    expect(loadingText).toBeInTheDocument();
+    await findByLabelText(undoneTask.name)
+    expect(mocked(apiService).get).toBeCalledTimes(1);
 })
