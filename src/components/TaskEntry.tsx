@@ -22,9 +22,9 @@ const TaskContainer = styled.li`
 
 const StyledCheckbox = styled.input.attrs({ type: "checkbox" })`
     position: relative;
-    width: 1.5em;
-    height: 1.5em;
-    border: 1px solid ${(props) => props.color || "white"};
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1px solid ${props => props.color || "white"};
     border-radius: .25rem;
     appearance: none;
     outline: 0;
@@ -92,7 +92,7 @@ function TaskEntry({
   name,
   done,
   category,
-  changeHandler,
+  changeHandler
 }: TaskEntryProps) {
   return (
     <TaskContainer color={category?.color}>

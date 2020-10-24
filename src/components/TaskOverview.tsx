@@ -4,10 +4,9 @@ import { ActionUnion } from "../types/helpers";
 import TaskList from "./TaskList";
 import QuickAddTask from "./QuickAddTask";
 import { apiService } from "../services/mockedApiService";
+import { TaskListSkeleton } from "../skeletons/TaskSkeleton";
 
 // concern: handle API connection and changes to task data
-
-// TODO: write tests for TaskOverview
 
 enum Actions {
   Add = "ADD_TASK",
@@ -54,6 +53,7 @@ function taskReducer(state: Task[], action: TaskActions): Task[] {
 
 function TaskOverview() {
   const [isLoading, setIsLoading] = useState(false);
+  //const [tasksInFlight, setTasksInFlight] = useState(0);
   const [tasks, dispatch] = useReducer(taskReducer, []);
 
   function fetchTasks(){
@@ -73,6 +73,7 @@ function TaskOverview() {
   }, []);
 
   function quickAddHandler(taskName: string){
+    
     apiService.post("task", {
       name: taskName,
       done: false,
@@ -83,7 +84,7 @@ function TaskOverview() {
   return (
     <Fragment>
       {isLoading ? (
-        <div>...loading</div>
+        <TaskListSkeleton/>
       ) : (
         <TaskList
           tasks={tasks}

@@ -24,21 +24,23 @@ type ApiServiceType = {
 
 interface Repo<T> {
     list: T[];
-    get: (id?:number)=>T[];
-    post: (params:T)=>T;
+    get: (id?:number)=>Promise<T[]>;
+    post: (params:T)=>Promise<T>;
 }
 
 class TaskRepo implements Repo<Task> {
     list = [doneTask, undoneTask];
     get (id?:number){
-        if(id) return this.list;
-        return [...this.list];
+        let res:Task[];
+        if(id) res = this.list.filter(t => t.id ===id);
+        res = [...this.list];
+        return new Promise<Task[]>(resolve => setTimeout(resolve.bind(null, res),5000))
     }
 
     post(task: TaskPrototype){
         const res = {...task, id: Math.round(Math.random()*3000) }
         this.list.push(res);
-        return res;
+        return new Promise<Task>(resolve => setTimeout(resolve.bind(null, res),3000))
     }
 }
 
@@ -48,7 +50,7 @@ export const apiService:ApiServiceType = {
     get: (route, id) => {
         switch (route){
             case "task":
-                return Promise.resolve(mockedTaskRepo.get(id));
+                return mockedTaskRepo.get(id);
             default :
                 throw new Error("invalid Route!")
         };
@@ -57,7 +59,7 @@ export const apiService:ApiServiceType = {
     post: (route, params) => {
         switch (route){
             case "task":
-                return Promise.resolve(mockedTaskRepo.post(params));
+                return mockedTaskRepo.post(params);
             default :
                 throw new Error("invalid Route!")
         }
