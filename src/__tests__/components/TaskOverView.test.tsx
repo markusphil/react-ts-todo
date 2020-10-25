@@ -4,7 +4,7 @@ import {apiService} from "../../services/mockedApiService"
 import {mocked} from "ts-jest/utils"
 
 import TaskOverview from "../../components/TaskOverview";
-import { undoneTask } from "../../taskFixtures";
+import { undoneTask } from "../../fixtures/taskFixtures";
 // TODO:  cover all reducer actions
 
 jest.mock("../../services/mockedApiService")

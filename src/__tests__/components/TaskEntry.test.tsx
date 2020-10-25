@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // fixtures
-import { doneTask, undoneTask } from "../../taskFixtures";
+import { doneTask, undoneTask } from "../../fixtures/taskFixtures";
 // component
 import TaskEntry from "../../components/TaskEntry";
 

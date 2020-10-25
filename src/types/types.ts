@@ -12,8 +12,11 @@ export interface Task extends TaskPrototype {
   
 }
 
-export interface Category {
-  id: number;
+export interface CategoryPrototype {
   name: string;
   color: string;
+}
+
+export interface Category extends CategoryPrototype {
+  id: number;
 }

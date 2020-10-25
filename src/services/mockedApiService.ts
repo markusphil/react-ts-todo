@@ -1,4 +1,4 @@
-import { doneTask, undoneTask } from './../taskFixtures';
+import { doneTask, undoneTask } from '../fixtures/taskFixtures';
 import { RouteUnion } from '../types/helpers';
 import { Task, TaskPrototype } from './../types/types';
 type Route = "task" | "category"
