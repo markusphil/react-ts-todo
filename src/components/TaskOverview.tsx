@@ -4,7 +4,8 @@ import { ActionUnion } from "../types/helpers";
 import TaskList from "./TaskList";
 import QuickAddTask from "./QuickAddTask";
 import { apiService } from "../services/mockedApiService";
-import { TaskListSkeleton } from "../skeletons/TaskSkeleton";
+import { TaskListSkeleton, TaskSkeleton } from "../skeletons/TaskSkeleton";
+import useCounter from "../hooks/useCounter";
 
 // concern: handle API connection and changes to task data
 
@@ -53,7 +54,7 @@ function taskReducer(state: Task[], action: TaskActions): Task[] {
 
 function TaskOverview() {
   const [isLoading, setIsLoading] = useState(false);
-  //const [tasksInFlight, setTasksInFlight] = useState(0);
+  const [loadingTasksCount, increment, decrement] = useCounter();
   const [tasks, dispatch] = useReducer(taskReducer, []);
 
   function fetchTasks(){
@@ -73,12 +74,15 @@ function TaskOverview() {
   }, []);
 
   function quickAddHandler(taskName: string){
-    
+    increment();
     apiService.post("task", {
       name: taskName,
       done: false,
       createdAt:new Date()
-    }).then(res => dispatch({type: Actions.Add, payload:res}));
+    }).then(res => {
+      dispatch({type: Actions.Add, payload:res})
+      decrement();
+    });
   }
 
   return (
@@ -93,9 +97,12 @@ function TaskOverview() {
           }
         />
       )}
+      {loadingTasksCount > 0 && (
+        <ul>
+          {Array(loadingTasksCount).fill(0).map((_,k)=><TaskSkeleton key={k}/>)}
+        </ul>)}
       <QuickAddTask addTaskHandler={quickAddHandler}/>
     </Fragment>
-    //IDEA: display TaskList Skeleton while loading
   );
 }
 
