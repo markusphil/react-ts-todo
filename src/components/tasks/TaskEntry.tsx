@@ -1,5 +1,5 @@
 import React from "react";
-import { Task } from "../types/types";
+import { Task } from "../../types/types";
 import styled from "styled-components";
 
 interface TaskEntryProps extends Task {

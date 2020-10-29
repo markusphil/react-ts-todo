@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import QuickAddTask from "../../components/QuickAddTask";
+import QuickAddTask from "../../components/tasks/QuickAddTask";
 
 
 const onAdd = jest.fn();

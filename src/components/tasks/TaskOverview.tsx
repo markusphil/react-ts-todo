@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useReducer, useState } from "react";
-import { Task } from "../types/types";
-import { ActionUnion } from "../types/helpers";
+import { Task } from "../../types/types";
+import { ActionUnion } from "../../types/helpers";
 import TaskList from "./TaskList";
 import QuickAddTask from "./QuickAddTask";
-import { apiService } from "../services/mockedApiService";
+import { apiService } from "../../services/mockedApiService";
 import { TaskListSkeleton, TaskSkeleton } from "../skeletons/TaskSkeleton";
-import useCounter from "../hooks/useCounter";
+import useCounter from "../../hooks/useCounter";
 
 // concern: handle API connection and changes to task data
 

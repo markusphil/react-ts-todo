@@ -1,7 +1,7 @@
 import React from "react";
 import TaskEntry from "./TaskEntry";
-import { Task } from "../types/types";
-import useSearch from "../hooks/useSearch";
+import { Task } from "../../types/types";
+import useSearch from "../../hooks/useSearch";
 
 // Concern: Display, Search and Filter List of Tasks
 interface TaskListProps {

@@ -1,7 +1,7 @@
 import React from "react";
 
-import TaskOverview from "./components/TaskOverview";
-import { Col, Row, Container } from "./styled/base";
+import TaskOverview from "./components/tasks/TaskOverview";
+import { Col, Row, Container } from "./components/styled/base";
 
 function App() {
   return (
