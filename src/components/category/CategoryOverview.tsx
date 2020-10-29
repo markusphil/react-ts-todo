@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useReducer, useState } from "react";
 import { Category } from "../../types/types";
 import { ActionUnion } from "../../types/helpers";
 import { apiService } from "../../services/mockedApiService";
+import CategoryList from "./CategoryList";
 
 
 // concern: handle API connection and changes to task data
@@ -68,9 +69,7 @@ function CategoryOverview() {
       {isLoading ? (
         <div>...loading</div>
       ) : (
-        <ul>
-           {categories.map(c=> <li>{c.name}</li>)} 
-        </ul>
+        <CategoryList categories={categories}/>
       )}
       
     </Fragment>
