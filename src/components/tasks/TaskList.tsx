@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import TaskEntry from "./TaskEntry";
 import { Task } from "../../types/types";
 import useSearch from "../../hooks/useSearch";
+import { TodoContext } from "../../context/TodoContext";
 
 // Concern: Display, Search and Filter List of Tasks
 interface TaskListProps {
@@ -15,6 +16,13 @@ function TaskList({ tasks, updateTaskHandler }: TaskListProps) {
     "description",
   ]);
 
+  const {filter} = useContext(TodoContext);
+
+  const renderedList = useMemo(
+    ()=> filter.categoryIds.length ? filteredList.filter(t => t.category && filter.categoryIds.includes(t.category.id)) : filteredList,
+    [filter, filteredList ]
+  )
+
   return (
     <div>
       {tasks.length > 0 && (
@@ -26,9 +34,9 @@ function TaskList({ tasks, updateTaskHandler }: TaskListProps) {
           />
         </div>
       )}
-      {filteredList.length > 0 ? (
+      {renderedList.length > 0 ? (
         <ul data-testid="tasklist">
-          {filteredList.map((task) => (
+          {renderedList.map((task) => (
             <TaskEntry
               {...task}
               changeHandler={updateTaskHandler}

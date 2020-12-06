@@ -84,7 +84,6 @@ const StyledCheckbox = styled.input.attrs({ type: "checkbox" })`
         opacity: 0.8;
       }
     }
-  }
 `;
 
 function TaskEntry({
