@@ -7,8 +7,11 @@ import { apiService } from "../../services/mockedApiService";
 import { TaskListSkeleton, TaskSkeleton } from "../skeletons/TaskSkeleton";
 import useCounter from "../../hooks/useCounter";
 
-// concern: handle API connection and changes to task data
+// TODO: add Detail view
+// TODO: replace enums -> express directly in type
 
+// concern: handle API connection and changes to task data
+ 
 enum Actions {
   Add = "ADD_TASK",
   AddList = "ADD_TASK_LIST",
@@ -57,30 +60,30 @@ function TaskOverview() {
   const [loadingTasksCount, increment, decrement] = useCounter();
   const [tasks, dispatch] = useReducer(taskReducer, []);
 
-  function fetchTasks(){
-    console.log("fetch")
+  function fetchTasks() {
+    console.log("fetch tasks")
     return apiService.get("task").then(res => {
-        dispatch({
-          type: Actions.Refresh,
-          payload: res,
-        });
-      })
+      dispatch({
+        type: Actions.Refresh,
+        payload: res,
+      });
+    })
   }
 
   useEffect(() => {
     setIsLoading(true);
-    fetchTasks().then(()=> setIsLoading(false));
-    setInterval(fetchTasks,10*1000);
+    fetchTasks().then(() => setIsLoading(false));
+    setInterval(fetchTasks, 10 * 1000);
   }, []);
 
-  function quickAddHandler(taskName: string){
+  function quickAddHandler(taskName: string) {
     increment();
     apiService.post("task", {
       name: taskName,
       done: false,
-      createdAt:new Date()
+      createdAt: new Date()
     }).then(res => {
-      dispatch({type: Actions.Add, payload:res})
+      dispatch({ type: Actions.Add, payload: res })
       decrement();
     });
   }
@@ -88,7 +91,7 @@ function TaskOverview() {
   return (
     <Fragment>
       {isLoading ? (
-        <TaskListSkeleton/>
+        <TaskListSkeleton />
       ) : (
         <TaskList
           tasks={tasks}
@@ -99,9 +102,9 @@ function TaskOverview() {
       )}
       {loadingTasksCount > 0 && (
         <ul>
-          {Array(loadingTasksCount).fill(0).map((_,k)=><TaskSkeleton key={k}/>)}
+          {Array(loadingTasksCount).fill(0).map((_, k) => <TaskSkeleton key={k} />)}
         </ul>)}
-      <QuickAddTask addTaskHandler={quickAddHandler}/>
+      <QuickAddTask addTaskHandler={quickAddHandler} />
     </Fragment>
   );
 }

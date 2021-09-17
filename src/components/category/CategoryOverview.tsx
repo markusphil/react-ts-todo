@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect, useReducer, useState } from "react";
+import React, { Fragment, useContext, useEffect, useReducer, useState } from "react";
 import { Category } from "../../types/types";
 import { ActionUnion } from "../../types/helpers";
 import { apiService } from "../../services/mockedApiService";
 import CategoryList from "./CategoryList";
+import { useFilterContext } from "../../context/FilterContext";
 
 
 // concern: handle API connection and changes to task data
@@ -42,36 +43,43 @@ function categoryReducer(state: Category[], action: CategoryActions): Category[]
   }
 }
 
+
+
 function CategoryOverview() {
   const [isLoading, setIsLoading] = useState(false);
   const [categories, dispatch] = useReducer(categoryReducer, []);
+  const { activeFilters, dispatchFilter } = useFilterContext()
 
-  function fetchCategories(){
-    console.log("fetch")
+  function fetchCategories() {
+    console.log("fetch categories")
     return apiService.get("category").then(res => {
-        dispatch({
-          type: Actions.Refresh,
-          payload: res,
-        });
-      })
+      dispatch({
+        type: Actions.Refresh,
+        payload: res,
+      });
+    })
+  }
+
+  function updateFilter(catIds: number[]) {
+    dispatchFilter({ type: "SET_CATEGORIES", payload: catIds })
   }
 
   useEffect(() => {
     setIsLoading(true);
-    fetchCategories().then(()=> setIsLoading(false));
-    setInterval(fetchCategories,10*1000);
+    fetchCategories().then(() => setIsLoading(false));
+    setInterval(fetchCategories, 10 * 1000);
   }, []);
 
-  
+
 
   return (
     <Fragment>
       {isLoading ? (
         <div>...loading</div>
       ) : (
-        <CategoryList categories={categories}/>
+        <CategoryList categories={categories} activeCategoryFilters={activeFilters.categoryIds} updateCategoryFilter={updateFilter} />
       )}
-      
+
     </Fragment>
   );
 }
