@@ -1,8 +1,8 @@
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import TaskEntry from "./TaskEntry";
 import { Task } from "../../types/types";
 import useSearch from "../../hooks/useSearch";
-import { TodoContext } from "../../context/TodoContext";
+import { useFilterContext } from "../../context/FilterContext";
 
 // Concern: Display, Search and Filter List of Tasks
 interface TaskListProps {
@@ -16,11 +16,11 @@ function TaskList({ tasks, updateTaskHandler }: TaskListProps) {
     "description",
   ]);
 
-  const {filter} = useContext(TodoContext);
+  const {activeFilters} = useFilterContext();
 
   const renderedList = useMemo(
-    ()=> filter.categoryIds.length ? filteredList.filter(t => t.category && filter.categoryIds.includes(t.category.id)) : filteredList,
-    [filter, filteredList ]
+    ()=> activeFilters.categoryIds.length ? filteredList.filter(t => t.category && activeFilters.categoryIds.includes(t.category.id)) : filteredList,
+    [activeFilters, filteredList ]
   )
 
   return (

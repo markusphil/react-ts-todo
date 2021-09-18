@@ -8,49 +8,39 @@ import { TaskListSkeleton, TaskSkeleton } from "../skeletons/TaskSkeleton";
 import useCounter from "../../hooks/useCounter";
 
 // TODO: add Detail view
-// TODO: replace enums -> express directly in type
 
 // concern: handle API connection and changes to task data
  
-enum Actions {
-  Add = "ADD_TASK",
-  AddList = "ADD_TASK_LIST",
-  Remove = "REMOVE_TASK",
-  Toggle = "TOGGLE_DONE",
-  Update = "UPDATE_TASK",
-  Refresh = "REPLACE_TASK_LIST"
-}
-
 type TaskActionPayloads = {
-  [Actions.Add]: Task;
-  [Actions.AddList]: Task[];
-  [Actions.Remove]: { id: number };
-  [Actions.Toggle]: { id: number; done: boolean };
-  [Actions.Update]: Task;
-  [Actions.Refresh]: Task[];
+  "ADD_TASK": Task;
+  "ADD_TASK_LIST": Task[];
+  "REMOVE_TASK": { id: number };
+  "TOGGLE_DONE": { id: number; done: boolean };
+  "UPDATE_TASK": Task;
+  "REPLACE_TASK_LIST": Task[];
 };
 
 type TaskActions = ActionUnion<TaskActionPayloads>;
 
 function taskReducer(state: Task[], action: TaskActions): Task[] {
   switch (action.type) {
-    case Actions.Add:
+    case "ADD_TASK":
       return [...state, action.payload];
-    case Actions.AddList:
+    case "ADD_TASK_LIST":
       return [...state, ...action.payload];
-    case Actions.Remove:
+    case "REMOVE_TASK":
       return state.filter((t) => t.id !== action.payload.id);
-    case Actions.Toggle:
+    case "TOGGLE_DONE":
       return state.map((task) =>
         task.id === action.payload.id
           ? { ...task, done: action.payload.done }
           : task
       );
-    case Actions.Update:
+    case "UPDATE_TASK":
       return state.map((task) =>
         task.id === action.payload.id ? action.payload : task
       );
-    case Actions.Refresh:
+    case "REPLACE_TASK_LIST":
       return action.payload
   }
 }
@@ -64,7 +54,7 @@ function TaskOverview() {
     console.log("fetch tasks")
     return apiService.get("task").then(res => {
       dispatch({
-        type: Actions.Refresh,
+        type: "REPLACE_TASK_LIST",
         payload: res,
       });
     })
@@ -83,7 +73,7 @@ function TaskOverview() {
       done: false,
       createdAt: new Date()
     }).then(res => {
-      dispatch({ type: Actions.Add, payload: res })
+      dispatch({ type: "ADD_TASK", payload: res })
       decrement();
     });
   }
@@ -96,7 +86,7 @@ function TaskOverview() {
         <TaskList
           tasks={tasks}
           updateTaskHandler={(id, val) =>
-            dispatch({ type: Actions.Toggle, payload: { id: id, done: val } })
+            dispatch({ type: "TOGGLE_DONE", payload: { id: id, done: val } })
           }
         />
       )}

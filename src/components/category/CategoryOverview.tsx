@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useReducer, useState } from "react";
+import React, { Fragment, useEffect, useReducer, useState } from "react";
 import { Category } from "../../types/types";
 import { ActionUnion } from "../../types/helpers";
 import { apiService } from "../../services/mockedApiService";
@@ -8,42 +8,32 @@ import { useFilterContext } from "../../context/FilterContext";
 
 // concern: handle API connection and changes to task data
 
-enum Actions {
-  Add = "ADD_CATEGORY",
-  AddList = "ADD_CATEGORY_LIST",
-  Remove = "REMOVE_CATEGORY",
-  Update = "UPDATE_CATEGORY",
-  Refresh = "REPLACE_CATEGORY_LIST"
-}
-
 type CategoryActionPayloads = {
-  [Actions.Add]: Category;
-  [Actions.AddList]: Category[];
-  [Actions.Remove]: { id: number };
-  [Actions.Update]: Category;
-  [Actions.Refresh]: Category[];
+  "ADD_CATEGORY": Category;
+  "ADD_CATEGORY_LIST": Category[];
+  "REMOVE_CATEGORY": { id: number };
+  "UPDATE_CATEGORY": Category;
+  "REPLACE_CATEGORY_LIST": Category[];
 };
 
 type CategoryActions = ActionUnion<CategoryActionPayloads>;
 
 function categoryReducer(state: Category[], action: CategoryActions): Category[] {
   switch (action.type) {
-    case Actions.Add:
+    case "ADD_CATEGORY":
       return [...state, action.payload];
-    case Actions.AddList:
+    case "ADD_CATEGORY_LIST" :
       return [...state, ...action.payload];
-    case Actions.Remove:
+    case "REMOVE_CATEGORY":
       return state.filter((c) => c.id !== action.payload.id);
-    case Actions.Update:
+    case "UPDATE_CATEGORY":
       return state.map((c) =>
         c.id === action.payload.id ? action.payload : c
       );
-    case Actions.Refresh:
+    case "REPLACE_CATEGORY_LIST":
       return action.payload
   }
 }
-
-
 
 function CategoryOverview() {
   const [isLoading, setIsLoading] = useState(false);
@@ -54,7 +44,7 @@ function CategoryOverview() {
     console.log("fetch categories")
     return apiService.get("category").then(res => {
       dispatch({
-        type: Actions.Refresh,
+        type: "REPLACE_CATEGORY_LIST",
         payload: res,
       });
     })
@@ -69,8 +59,6 @@ function CategoryOverview() {
     fetchCategories().then(() => setIsLoading(false));
     setInterval(fetchCategories, 10 * 1000);
   }, []);
-
-
 
   return (
     <Fragment>
