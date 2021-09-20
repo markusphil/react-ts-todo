@@ -4,11 +4,14 @@ import TaskOverview from "./components/tasks/TaskOverview";
 import { Col, Row, Container } from "./components/styled/base";
 import CategoryOverview from "./components/category/CategoryOverview";
 import { FilterContextProvider } from "./context/FilterContext";
+import { CategoryContextProvider } from "./context/CategoryContext";
+
 
 function App() {
   return (
     <div className="App">
-      <FilterContextProvider>
+      <CategoryContextProvider>
+      <FilterContextProvider> 
         <h1>TODO</h1>
         <Container>
           <Row>
@@ -17,7 +20,7 @@ function App() {
           </Row>
         </Container>
       </FilterContextProvider>
-
+      </CategoryContextProvider>
     </div>
   );
 }

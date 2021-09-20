@@ -1,49 +1,27 @@
-import React, { Fragment, useEffect, useReducer, useState } from "react";
-import { Category } from "../../types/types";
-import { ActionUnion } from "../../types/helpers";
+import React, { Fragment, useEffect, useState } from "react";
 import { apiService } from "../../services/mockedApiService";
 import CategoryList from "./CategoryList";
 import { useFilterContext } from "../../context/FilterContext";
+import { useCategoryContext } from "../../context/CategoryContext";
 
 
-// concern: handle API connection and changes to task data
+// concern: handle API connection and changes to category data
 
-type CategoryActionPayloads = {
-  "ADD_CATEGORY": Category;
-  "ADD_CATEGORY_LIST": Category[];
-  "REMOVE_CATEGORY": { id: number };
-  "UPDATE_CATEGORY": Category;
-  "REPLACE_CATEGORY_LIST": Category[];
-};
-
-type CategoryActions = ActionUnion<CategoryActionPayloads>;
-
-function categoryReducer(state: Category[], action: CategoryActions): Category[] {
-  switch (action.type) {
-    case "ADD_CATEGORY":
-      return [...state, action.payload];
-    case "ADD_CATEGORY_LIST" :
-      return [...state, ...action.payload];
-    case "REMOVE_CATEGORY":
-      return state.filter((c) => c.id !== action.payload.id);
-    case "UPDATE_CATEGORY":
-      return state.map((c) =>
-        c.id === action.payload.id ? action.payload : c
-      );
-    case "REPLACE_CATEGORY_LIST":
-      return action.payload
-  }
-}
+/*
+ TODO:
+ - add or delete category
+ - select default category
+*/
 
 function CategoryOverview() {
   const [isLoading, setIsLoading] = useState(false);
-  const [categories, dispatch] = useReducer(categoryReducer, []);
+  const {categories, dispatchCategories} = useCategoryContext()
   const { activeFilters, dispatchFilter } = useFilterContext()
 
   function fetchCategories() {
     console.log("fetch categories")
     return apiService.get("category").then(res => {
-      dispatch({
+      dispatchCategories({
         type: "REPLACE_CATEGORY_LIST",
         payload: res,
       });
@@ -62,6 +40,7 @@ function CategoryOverview() {
 
   return (
     <Fragment>
+      <h2>Categories</h2>
       {isLoading ? (
         <div>...loading</div>
       ) : (
