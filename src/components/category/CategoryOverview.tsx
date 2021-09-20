@@ -18,25 +18,27 @@ function CategoryOverview() {
   const {categories, dispatchCategories} = useCategoryContext()
   const { activeFilters, dispatchFilter } = useFilterContext()
 
-  function fetchCategories() {
-    console.log("fetch categories")
-    return apiService.get("category").then(res => {
-      dispatchCategories({
-        type: "REPLACE_CATEGORY_LIST",
-        payload: res,
-      });
-    })
-  }
-
   function updateFilter(catIds: number[]) {
     dispatchFilter({ type: "SET_CATEGORIES", payload: catIds })
   }
 
   useEffect(() => {
+    function fetchCategories() {
+      console.log("fetch categories")
+      return apiService.get("category").then(res => {
+        dispatchCategories({
+          type: "REPLACE_CATEGORY_LIST",
+          payload: res,
+        });
+      })
+    }
+
+    // load initial categories
     setIsLoading(true);
     fetchCategories().then(() => setIsLoading(false));
-    setInterval(fetchCategories, 10 * 1000);
-  }, []);
+    // sync all 5 minutes
+    setInterval(fetchCategories, 5 * 60 * 1000);
+  }, [dispatchCategories]);
 
   return (
     <Fragment>
@@ -46,7 +48,6 @@ function CategoryOverview() {
       ) : (
         <CategoryList categories={categories} activeCategoryFilters={activeFilters.categoryIds} updateCategoryFilter={updateFilter} />
       )}
-
     </Fragment>
   );
 }
