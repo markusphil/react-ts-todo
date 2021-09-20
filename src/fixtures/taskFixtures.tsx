@@ -1,15 +1,12 @@
 import { Task } from "../types/types";
+import { testCat } from "./categoryFixtures";
 
 export const undoneTask: Task = {
   id: 1,
   name: "First Test",
   createdAt: new Date(),
   done: false,
-  category: {
-    id: 2,
-    color: "orange",
-    name: "wuhoo",
-  },
+  category: testCat
 };
 
 export const doneTask: Task = {
@@ -17,9 +14,5 @@ export const doneTask: Task = {
   name: "Second Test",
   createdAt: new Date(),
   done: true,
-  category: {
-    id: 3,
-    color: "green",
-    name: "YOLO",
-  },
+  category: testCat
 };

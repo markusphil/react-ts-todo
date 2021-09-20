@@ -6,8 +6,10 @@ import QuickAddTask from "./QuickAddTask";
 import { apiService } from "../../services/mockedApiService";
 import { TaskListSkeleton, TaskSkeleton } from "../skeletons/TaskSkeleton";
 import useCounter from "../../hooks/useCounter";
+import { useCategoryContext } from "../../context/CategoryContext";
 
 // TODO: add Detail view
+// TODO: Filter bar entkoppeln?
 
 // concern: handle API connection and changes to task data
  
@@ -49,6 +51,7 @@ function TaskOverview() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingTasksCount, increment, decrement] = useCounter();
   const [tasks, dispatch] = useReducer(taskReducer, []);
+  const {defaultCategory} = useCategoryContext()
 
   function fetchTasks() {
     console.log("fetch tasks")
@@ -71,7 +74,8 @@ function TaskOverview() {
     apiService.post("task", {
       name: taskName,
       done: false,
-      createdAt: new Date()
+      createdAt: new Date(),
+      category: defaultCategory
     }).then(res => {
       dispatch({ type: "ADD_TASK", payload: res })
       decrement();
@@ -80,6 +84,7 @@ function TaskOverview() {
 
   return (
     <Fragment>
+      <h2>Tasks</h2>
       {isLoading ? (
         <TaskListSkeleton />
       ) : (
