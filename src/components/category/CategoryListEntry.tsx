@@ -2,18 +2,18 @@ import { Category } from "../../types/types";
 
 import React from "react";
 import styled from "styled-components";
-import { size } from "../styled/variables";
+import { sizes } from "../styled/variables";
 interface CatEntryProp extends Category{
     selectionHandler: (id:number)=>void
 }
 
 const CatEntryCont = styled.li<{color: string}>`
     list-style: none;
-  padding: ${size.space_s};
+  padding: ${sizes.space.s};
   color: ${(props) => props.color || "white"};
   border: 1px solid ${(props) => props.color || "white"};
-  border-radius: ${size.space_s};
-  margin: ${size.space_m} 0;
+  border-radius: ${sizes.space.s};
+  margin: ${sizes.space.m} 0;
   max-width: 400px;
   display: flex;
   
