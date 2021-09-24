@@ -1,5 +1,8 @@
 import React from "react";
+import { ValueUnion } from "../../../types/helpers";
 import { Task } from "../../../types/types";
+import { partialUpdate } from "../../../utils/partialUpdates";
+import TaskHeadline from "./TaskHeadline";
 
 /*
 IDEA:
@@ -16,12 +19,20 @@ IDEA:
 
 interface TaskDetailsProps {
     task: Task
+    updateTaskHandler: (task:Task) => void
 }
 
-function TaskDetails ({task}:TaskDetailsProps){
+function TaskDetails ({task, updateTaskHandler}:TaskDetailsProps){
+
+    function partialTaskUpdate(key: keyof Task, value: ValueUnion<Task>){
+        updateTaskHandler(partialUpdate(task, key, value))
+    }
+
     return (
         <div>
-            <h1>{task.name}</h1>
+            <TaskHeadline {...task}
+                updateTitleHandler={title => partialTaskUpdate("name", title)}
+                updateStateHandler={isDone => partialTaskUpdate("done", isDone)}/>
             <p>{task.description}</p>
             
         </div>
